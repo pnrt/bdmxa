@@ -19,8 +19,6 @@ A simple and user-friendly Android application built with Jetpack Compose, desig
 |-------------------------------------------|----------------------------------------------|--------------------------------------------------|
 | ![Orders](Screenshot_20250506_113103.png) | ![Transport](Screenshot_20250506_113221.png) | ![Add Transport](Screenshot_20250506_113252.png) |
 
-> _Add your screenshots in a `/screenshots` folder and reference them above._
-
 ---
 
 ## 🚀 Getting Started
@@ -38,3 +36,5 @@ A simple and user-friendly Android application built with Jetpack Compose, desig
 git clone https://github.com/pnrt/bdmxa.git
 cd bdmxa
 ```
+### Desktop App
+👉 ![Github](https://github.com/pnrt/bdmxd)
