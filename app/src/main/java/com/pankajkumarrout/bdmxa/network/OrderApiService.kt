@@ -8,6 +8,7 @@ import io.ktor.client.request.get
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import com.pankajkumarrout.bdmxa.security.Api
+import com.pankajkumarrout.bdmxa.ui.login.LogUser
 
 class OrderApiService {
     private val client = HttpClient {
@@ -22,6 +23,6 @@ class OrderApiService {
     }
 
     suspend fun orderInfoList(id: Long): List<OrderInfo> {
-        return client.get("${Api.url}${Api.apiKey}/order/active/${id}").body<List<OrderInfo>>()
+        return client.get("${Api.url}${Api.apiKey}/order/${if (LogUser.presentUser?.role == "admin") "list" else "active"}/${id}").body<List<OrderInfo>>()
     }
 }

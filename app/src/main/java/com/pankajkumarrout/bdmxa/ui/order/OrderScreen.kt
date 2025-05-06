@@ -14,16 +14,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardElevation
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -34,13 +40,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.pankajkumarrout.bdmxa.R
 import com.pankajkumarrout.bdmxa.model.OrderInfo
 import com.pankajkumarrout.bdmxa.ui.home.ConfirmationDialog
+import com.pankajkumarrout.bdmxa.ui.login.LogUser
 import org.koin.compose.koinInject
 
 
@@ -103,8 +114,65 @@ fun OrderScreen(navController: NavController) {
                         }
                     }
                 } else {
+                    var searchList by remember { mutableStateOf("") }
+                    val selectedList: List<OrderInfo> = if (searchList.isEmpty()) orderViewModel.orderInfoList else orderViewModel.orderInfoList.filter { it.tpNumber.lowercase().contains(searchList) }
+
+                    val listFilter = listOf("active", "pending", "success", "cancelled", )
+                    val listColor = listOf(Color.Green, Color.Yellow, Color.White, Color.Red)
+
+                    var selectedFilter by remember { mutableStateOf("") }
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        OutlinedTextField(
+                            value = searchList,
+                            onValueChange = {searchList = it},
+                            label = { Text("Search...")},
+                            singleLine = true,
+                            trailingIcon = { IconButton(onClick = {}, modifier = Modifier.padding(8.dp)){ Icon(imageVector = Icons.Default.Search, contentDescription = "Search")} },
+                            shape = RoundedCornerShape(32.dp),
+                            modifier = Modifier.scale(0.8f)
+                        )
+                        if (LogUser.presentUser?.role == "admin") {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    painter = painterResource(R.drawable.filter_list_24px),
+                                    contentDescription = "Filter",
+                                    modifier = Modifier
+                                        .padding(8.dp)
+                                        .clickable { selectedFilter = "" }
+                                )
+                                LazyRow(
+                                ) {
+                                    items(listFilter) { item ->
+                                        Button(
+                                            onClick = { selectedFilter = item },
+                                            colors = ButtonColors(
+                                                contentColor = if (item == selectedFilter) Color.White else Color.Black,
+                                                containerColor = if (item == selectedFilter) Color.Black else Color.White,
+                                                disabledContainerColor = Color.White,
+                                                disabledContentColor = Color.Black
+                                            ),
+                                            modifier = Modifier.padding(8.dp)
+                                        ) {
+                                            Text(
+                                                item.replaceFirstChar { it.uppercaseChar() },
+                                                fontSize = 14.sp
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    val selectedListFilter = if (selectedFilter.isEmpty()) selectedList else selectedList.filter { it.status == selectedFilter }
                     LazyColumn {
-                        items(orderViewModel.orderInfoList) { item ->
+                        items(selectedListFilter) { item ->
                             Card(
                                 modifier = Modifier
                                     .fillMaxWidth()
