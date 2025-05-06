@@ -1,4 +1,4 @@
-# 📱 Business Development Mobilizer Android App
+# 📱 Business Development Mobilizer X Android App
 
 A simple and user-friendly Android application built with Jetpack Compose, designed to Manage Orders and Status of Individual Trips.
 
@@ -36,5 +36,5 @@ A simple and user-friendly Android application built with Jetpack Compose, desig
 
 ```bash
 git clone https://github.com/pnrt/bdmxa.git
-cd bdxma
+cd bdmxa
 ```
