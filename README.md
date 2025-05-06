@@ -37,4 +37,4 @@ git clone https://github.com/pnrt/bdmxa.git
 cd bdmxa
 ```
 ### Desktop App
-👉 ![Github](https://github.com/pnrt/bdmxd)
+[👉 Github](https://github.com/pnrt/bdmxd)
